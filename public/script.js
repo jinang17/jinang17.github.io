@@ -227,10 +227,11 @@
   }
   var clock = $('#clock'), greeting = $('#greeting'), emoji = $('#emoji');
   var greetSpan = document.querySelector('.greet');
-  var istFmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
+  // The visitor's own clock: no timeZone option means the browser's local zone.
+  var localFmt = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
   function tick() {
     var o = {};
-    istFmt.formatToParts(new Date()).forEach(function (p) { o[p.type] = p.value; });
+    localFmt.formatToParts(new Date()).forEach(function (p) { o[p.type] = p.value; });
     if (clock) clock.textContent = o.day + '/' + o.month + '/' + o.year + ' ' + o.hour + ':' + o.minute + ':' + o.second;
     var g = greetingFor(parseInt(o.hour, 10));
     if (greeting) greeting.textContent = g[0];
@@ -238,6 +239,78 @@
     if (greetSpan) greetSpan.textContent = g[0];
   }
   if (clock) { tick(); setInterval(tick, 1000); }
+
+  /* ---------------- Visitor's place ---------------- */
+  // 1) Instant and offline: city and country derived from the browser's timezone.
+  // 2) Upgrade: a one-off lookup by IP (GeoJS, no key, no cookies) for the real city. It is only used
+  //    when its timezone agrees with the browser's, so the place can never contradict the clock.
+  //    Set GEO_URL to '' to turn the lookup off and rely on the timezone alone.
+  var GEO_URL = 'https://get.geojs.io/v1/ip/geo.json';
+  var placeEl = $('#place');
+  var tzRaw = safe(function () { return Intl.DateTimeFormat().resolvedOptions().timeZone; }) || '';
+  var TZ_ALIAS = {
+    'Asia/Calcutta': 'Asia/Kolkata', 'Asia/Saigon': 'Asia/Ho_Chi_Minh', 'Asia/Katmandu': 'Asia/Kathmandu',
+    'Asia/Rangoon': 'Asia/Yangon', 'Europe/Kiev': 'Europe/Kyiv', 'Asia/Dacca': 'Asia/Dhaka', 'Asia/Thimbu': 'Asia/Thimphu',
+    'Atlantic/Faeroe': 'Atlantic/Faroe', 'Pacific/Samoa': 'Pacific/Pago_Pago', 'Asia/Istanbul': 'Europe/Istanbul',
+    'America/Buenos_Aires': 'America/Argentina/Buenos_Aires', 'America/Indianapolis': 'America/Indiana/Indianapolis'
+  };
+  var tzId = TZ_ALIAS[tzRaw] || tzRaw;
+  // Two zone ids agree if they show the same wall-clock time right now (DST aware).
+  function sameClock(a, b) {
+    return safe(function () {
+      var f = function (z) { return new Intl.DateTimeFormat('en-GB', { timeZone: z, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date()); };
+      return f(a) === f(b);
+    }) === true;
+  }
+
+  function tzAbbr() {
+    if (tzId === 'Asia/Kolkata') return 'IST';
+    var part = safe(function () {
+      return new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(new Date())
+        .filter(function (p) { return p.type === 'timeZoneName'; })[0];
+    });
+    var v = part ? part.value : '';
+    return /^GMT[+-]/.test(v) ? 'UTC' + v.slice(3) : v;
+  }
+  function countryName(code) {
+    return safe(function () { return new Intl.DisplayNames(['en'], { type: 'region' }).of(code); }) || '';
+  }
+  function setPlace(city, country) {
+    if (!placeEl) return;
+    var where = [city, country].filter(Boolean).join(', ');
+    placeEl.textContent = [tzAbbr(), where].filter(Boolean).join(' · ');
+  }
+  function fromTimezone() {
+    var parts = tzId.split('/');
+    var generic = !parts[1] || parts[0] === 'Etc' || tzId === 'UTC';
+    var city = generic ? '' : parts[parts.length - 1].replace(/_/g, ' ');
+    var code = window.__TZC && (window.__TZC[tzRaw] || window.__TZC[tzId]);
+    setPlace(city, code ? countryName(code) : '');
+  }
+  if (placeEl) {
+    fromTimezone();
+    if (GEO_URL) {
+      var cached = safe(function () { return JSON.parse(sessionStorage.getItem('geo') || 'null'); });
+      var useGeo = function (g) {
+        if (g && g.city && g.timezone && sameClock(g.timezone, tzRaw || tzId)) setPlace(g.city, g.country);
+      };
+      if (cached) useGeo(cached);
+      else if (window.fetch) {
+        var ctl = window.AbortController ? new AbortController() : null;
+        var killer = setTimeout(function () { if (ctl) ctl.abort(); }, 3500);
+        fetch(GEO_URL, ctl ? { signal: ctl.signal } : {})
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (g) {
+            clearTimeout(killer);
+            if (!g) return;
+            var slim = { city: g.city, country: g.country, timezone: g.timezone };
+            safe(function () { sessionStorage.setItem('geo', JSON.stringify(slim)); });
+            useGeo(slim);
+          })
+          .catch(function () { clearTimeout(killer); });
+      }
+    }
+  }
   var year = $('#year');
   if (year) year.textContent = new Date().getFullYear();
 

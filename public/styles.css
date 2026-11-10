@@ -562,3 +562,21 @@ details.more { margin-top: var(--space-tight); }
 .hero .bio .hero__role { margin: 0 0 0.5rem; min-height: 0; font-size: 1.0625rem; text-align: left; }
 .hero .bio .hero__role + p { margin-top: 0; }
 .hero__head { justify-content: flex-start; }
+
+/* ------------------------------------------------------------------
+   Phone hero: greeting spans the full width; name and portrait sit side by side below it
+------------------------------------------------------------------ */
+@media (max-width: 640px) {
+  .hero__top {
+    grid-template-columns: minmax(0, 1fr) 5.5rem;
+    grid-template-areas: "meta meta" "name portrait";
+    row-gap: 0.75rem; column-gap: 1rem; align-items: stretch;
+  }
+  .hero__head { display: contents; }
+  .hero__meta { grid-area: meta; }
+  /* name column = viewport - page gutters (2.5rem) - portrait (5.5rem) - gap (1rem); a word is ~5.8 font-sizes wide */
+  .hero__head .pixel-text { grid-area: name; font-size: calc((100vw - 9rem) / 5.9); align-self: start; }
+  .hero__top > .portrait { grid-area: portrait; width: 5.5rem; height: auto; margin-top: 0; }
+  .hero .bio { margin-top: 1.5rem; }
+  .hero .bio p { text-align: left; hyphens: manual; -webkit-hyphens: manual; }
+}
