@@ -1,0 +1,36 @@
+<svg class="diagram" viewBox="0 0 320 224" role="img" aria-labelledby="brokenomore-diagram-title">
+  <title id="brokenomore-diagram-title">A user talks to an agent with multi-turn memory. The agent routes to six financial tools and a sandboxed Text-to-SQL path, and every step is traced in Langfuse.</title>
+  <defs>
+    <marker id="arrow-bnm" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0.5 L7.5 4 L0 7.5 Z"/>
+    </marker>
+  </defs>
+  <!-- user -->
+  <rect class="stroke" x="8" y="86" width="56" height="34" rx="2"/>
+  <text class="label" x="36" y="107" text-anchor="middle">User</text>
+  <line class="stroke" x1="64" y1="103" x2="106" y2="103" marker-end="url(#arrow-bnm)"/>
+  <!-- agent with memory ring -->
+  <circle class="stroke--dashed" cx="142" cy="103" r="40"/>
+  <circle class="stroke--accent" cx="142" cy="103" r="30"/>
+  <text class="label--strong" x="142" y="100" text-anchor="middle" font-size="12">Agent</text>
+  <text class="label--muted" x="142" y="112" text-anchor="middle">router</text>
+  <text class="label--muted" x="142" y="24" text-anchor="middle">Langfuse traces</text>
+  <line class="stroke--dashed" x1="142" y1="30" x2="142" y2="62"/>
+  <text class="label--muted" x="134" y="160" text-anchor="middle">memory across sessions</text>
+  <!-- tools group -->
+  <line class="stroke" x1="182" y1="96" x2="212" y2="72" marker-end="url(#arrow-bnm)"/>
+  <rect class="stroke" x="214" y="14" width="98" height="116" rx="3"/>
+  <text class="label" x="263" y="32" text-anchor="middle">six financial tools</text>
+  <circle class="stroke" cx="242" cy="58" r="9"/>
+  <circle class="stroke" cx="284" cy="58" r="9"/>
+  <circle class="stroke" cx="242" cy="86" r="9"/>
+  <circle class="stroke" cx="284" cy="86" r="9"/>
+  <circle class="stroke" cx="242" cy="114" r="9"/>
+  <circle class="stroke" cx="284" cy="114" r="9"/>
+  <!-- sql sandbox -->
+  <line class="stroke" x1="182" y1="110" x2="200" y2="164" marker-end="url(#arrow-bnm)"/>
+  <rect class="stroke--accent" x="202" y="146" width="110" height="62" rx="3"/>
+  <text class="label" x="257" y="166" text-anchor="middle">Text-to-SQL sandbox</text>
+  <text class="label--muted" x="257" y="182" text-anchor="middle">bound to user id</text>
+  <text class="label--muted" x="257" y="196" text-anchor="middle">SQL allowlist</text>
+</svg>

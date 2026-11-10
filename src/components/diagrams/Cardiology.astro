@@ -1,0 +1,36 @@
+<svg class="diagram" viewBox="0 0 320 224" role="img" aria-labelledby="cardiology-diagram-title">
+  <title id="cardiology-diagram-title">Phi-3.5-mini in 4-bit is fine-tuned with QLoRA across a sweep of twelve adapter configurations; the best one lifts Top-2 accuracy by 2.6 points and cuts positional bias to 2.7 percent.</title>
+  <defs>
+    <marker id="arrow-cardio" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0.5 L7.5 4 L0 7.5 Z"/>
+    </marker>
+  </defs>
+  <!-- base model -->
+  <rect class="stroke" x="8" y="82" width="82" height="60" rx="2"/>
+  <text class="label--strong" x="49" y="106" text-anchor="middle" font-size="12">Phi-3.5-mini</text>
+  <text class="label--muted" x="49" y="121" text-anchor="middle">3.8B, 4-bit QLoRA</text>
+  <line class="stroke" x1="90" y1="112" x2="108" y2="112" marker-end="url(#arrow-cardio)"/>
+  <!-- adapter sweep grid: 4 x 3, one chosen -->
+  <text class="label" x="163" y="60" text-anchor="middle">12 adapter configurations</text>
+  <g class="stroke">
+    <rect x="110" y="72" width="22" height="22" rx="2"/>
+    <rect x="138" y="72" width="22" height="22" rx="2"/>
+    <rect x="166" y="72" width="22" height="22" rx="2"/>
+    <rect x="194" y="72" width="22" height="22" rx="2"/>
+    <rect x="110" y="100" width="22" height="22" rx="2"/>
+    <rect x="138" y="100" width="22" height="22" rx="2"/>
+    <rect x="194" y="100" width="22" height="22" rx="2"/>
+    <rect x="110" y="128" width="22" height="22" rx="2"/>
+    <rect x="138" y="128" width="22" height="22" rx="2"/>
+    <rect x="166" y="128" width="22" height="22" rx="2"/>
+    <rect x="194" y="128" width="22" height="22" rx="2"/>
+  </g>
+  <rect class="fill--accent" x="166" y="100" width="22" height="22" rx="2"/>
+  <text class="label--muted" x="163" y="170" text-anchor="middle">2,000 cardiology MCQs, chain-of-thought supervision</text>
+  <!-- result -->
+  <line class="stroke" x1="218" y1="112" x2="234" y2="112" marker-end="url(#arrow-cardio)"/>
+  <rect class="stroke--accent" x="236" y="82" width="76" height="60" rx="2"/>
+  <text class="label--strong" x="274" y="103" text-anchor="middle" font-size="12">+2.6 pts</text>
+  <text class="label--muted" x="274" y="117" text-anchor="middle">Top-2 accuracy</text>
+  <text class="label--muted" x="274" y="131" text-anchor="middle">bias 2.7%</text>
+</svg>

@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', (p) => !p.data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const home = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const d = post.data.date?.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<Base title={`${post.data.title} · Jinang Vohera`} description={post.data.description}>
+  <main class="page page--prose" id="main">
+    <p class="crumb mono"><a class="ulink" href={`${home}#writing`}>← All writing</a></p>
+    <article>
+      <header class="post-head">
+        <h1 class="post-head__title">{post.data.title}</h1>
+        <p class="muted mono small">
+          {d && <span>{d}</span>}
+          {d && post.data.readingTime && <span> · </span>}
+          {post.data.readingTime && <span>{post.data.readingTime} min read</span>}
+        </p>
+        {post.data.tags.length > 0 && (
+          <ul class="tags">{post.data.tags.map((t) => <li class="mono">{t}</li>)}</ul>
+        )}
+      </header>
+      <div class="prose"><Content /></div>
+    </article>
+  </main>
+</Base>
