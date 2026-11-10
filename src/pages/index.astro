@@ -34,27 +34,26 @@ const diagrams = { brokenomore: BrokeNoMore, cardiology: Cardiology, minigpt: Mi
         <span class="muted">IST · Ahmedabad, India</span>
       </p>
 
-      <h1 class="pixel-text" id="name" aria-label={profile.name}>{profile.name}</h1>
-
-      <div class="hero__row">
-        <div class="hero__copy">
+      <div class="hero__top">
+        <div class="hero__head">
+          <h1 class="pixel-text" id="name" aria-label={profile.name}>{profile.name}</h1>
           <p class="hero__role">
             {profile.role}<span class="muted"> · </span><span class="typewriter" id="typewriter">{typewriterLines[0]}</span>
           </p>
-
-          <div class="bio" id="about">
-            <p>
-              <span class="greet">Hello</span>, I'm Jinang, a software engineer who likes turning messy,
-              real-world problems into systems that stay reliable. I work across the stack, from APIs and data
-              pipelines to the interfaces people actually touch, and I care about the unglamorous parts: tests,
-              observability and clean failure modes.
-            </p>
-          </div>
         </div>
 
         <figure class="portrait">
           <img src={`${home}portrait.svg`} alt="Line-art portrait of Jinang Vohera, smiling, with glasses" width="150" height="178">
         </figure>
+      </div>
+
+      <div class="bio" id="about">
+        <p>
+          <span class="greet">Hello</span>, I'm Jinang, a software engineer who likes turning messy,
+          real-world problems into systems that stay reliable. I work across the stack, from APIs and data
+          pipelines to the interfaces people actually touch, and I care about the unglamorous parts: tests,
+          observability and clean failure modes.
+        </p>
       </div>
 
       <div class="socials">

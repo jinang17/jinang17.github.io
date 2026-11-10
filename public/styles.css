@@ -472,3 +472,44 @@ details.more { margin-top: var(--space-tight); }
   .portrait { height: auto; }
   .portrait img { height: auto; }
 }
+
+/* ------------------------------------------------------------------
+   Hero v2: name + role on the left, portrait beside them, bio full width
+------------------------------------------------------------------ */
+.hero__top { display: grid; grid-template-columns: minmax(0, 1fr) 12rem; gap: 2rem; align-items: stretch; margin-top: 0; }
+.hero__head { container-type: inline-size; display: flex; flex-direction: column; justify-content: space-between; gap: 1.25rem; min-width: 0; }
+.hero__head .pixel-text { font-size: 17cqw; }
+.pixel-text.is-pixel { flex-direction: column; flex-wrap: nowrap; gap: 0.3em; }
+.hero__role { margin: 0; min-height: 0; }
+.portrait { width: 12rem; height: auto; }
+.portrait img { height: 100%; width: 100%; object-fit: contain; }
+.hero .bio { margin-top: 2rem; }
+.hero .bio p { max-width: none; }
+@media (max-width: 640px) {
+  .hero__top { grid-template-columns: minmax(0, 1fr) 6.5rem; gap: 1rem; }
+  .portrait { width: 6.5rem; order: 0; }
+  .hero .bio { margin-top: 1.5rem; }
+}
+
+/* Contact: resume button + pinned note + email on one line, centred with the icons */
+.cta { flex-wrap: wrap; align-items: center; gap: 1rem 1.25rem; }
+.cta__mail { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; position: static; }
+.say-hi { position: static; transform: rotate(-4deg); margin: 0; display: inline-flex; align-items: center; gap: 0.1rem; }
+@media (max-width: 30rem) { .cta { flex-direction: row; align-items: center; gap: 1rem; } }
+@media (max-width: 640px) { .socials { row-gap: 1.5rem; } }
+
+/* Fit icons + contact on one line at desktop width */
+@media (min-width: 641px) {
+  .socials { flex-wrap: nowrap; gap: 1.5rem; }
+  .tiles { gap: 0.5rem; flex-wrap: nowrap; }
+  .tile { width: 2.5rem; height: 2.5rem; }
+  .tile svg { width: 1.2rem; height: 1.2rem; }
+  .cta { flex-wrap: nowrap; gap: 0.9rem; }
+  .cta .btn { padding: 0.65rem 0.95rem; white-space: nowrap; }
+  .cta__mail { flex-wrap: nowrap; gap: 0.4rem; white-space: nowrap; }
+}
+@media (max-width: 640px) {
+  .portrait img { object-fit: cover; object-position: 50% 30%; }
+}
+
+.say-hi { margin-right: 0.3rem; }
