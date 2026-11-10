@@ -6,7 +6,8 @@
   var safe = function (fn) { try { return fn(); } catch (e) { return null; } };
 
   /* ---------------- Sound ---------------- */
-  var isSoundEnabled = false;
+  // On by default; a visitor who switches it off stays off on later visits.
+  var isSoundEnabled = safe(function () { return localStorage.getItem('sound'); }) !== 'off';
   var ctx = null;
 
   function audio() {
@@ -90,11 +91,18 @@
     safe(function () { sessionStorage.setItem('toast-dismissed', '1'); });
   }
 
-  if (toast && !safe(function () { return sessionStorage.getItem('toast-dismissed'); })) {
+  renderSound();
+  // Browsers only allow audio after a gesture, so the toast confirms sound is on; the first click or key press unlocks it.
+  if (toast && isSoundEnabled && !safe(function () { return sessionStorage.getItem('toast-dismissed'); })) {
     setTimeout(function () { toast.classList.add('show'); }, 900);
+    setTimeout(hideToast, 4500);
   }
+  function unlockAudio() { if (isSoundEnabled) audio(); }
+  document.addEventListener('pointerdown', unlockAudio, { once: true });
+  document.addEventListener('keydown', unlockAudio, { once: true });
   if (enableBtn) enableBtn.addEventListener('click', function () {
     isSoundEnabled = true;
+    safe(function () { localStorage.setItem('sound', 'on'); });
     renderSound();
     playClick();
     setTimeout(hideToast, 2200);
@@ -102,6 +110,7 @@
   if (closeBtn) closeBtn.addEventListener('click', hideToast);
   if (soundToggle) soundToggle.addEventListener('click', function () {
     isSoundEnabled = !isSoundEnabled;
+    safe(function () { localStorage.setItem('sound', isSoundEnabled ? 'on' : 'off'); });
     renderSound();
     playClick();
   });
