@@ -4,6 +4,8 @@ import Base from '../layouts/Base.astro';
 import BrokeNoMore from '../components/diagrams/BrokeNoMore.astro';
 import Cardiology from '../components/diagrams/Cardiology.astro';
 import MiniGPT from '../components/diagrams/MiniGPT.astro';
+import NowPlaying from '../components/lab/NowPlaying.astro';
+import Moodboard from '../components/lab/Moodboard.astro';
 import {
   profile, socials, typewriterLines, experience, education, achievements,
   ratings, projects, earlierProjects, quotes,
@@ -22,10 +24,18 @@ const diagrams = { brokenomore: BrokeNoMore, cardiology: Cardiology, minigpt: Mi
 >
   <script is:inline define:vars={{ typewriterLines }}>window.__lines = typewriterLines;</script>
 
+  <link slot="head" rel="stylesheet" href={`${home}lab.css`}>
+
+  <div class="shell">
+  <aside class="side side--left" aria-label="Music player (experiment)"><NowPlaying /></aside>
+
   <main class="page" id="main">
 
     <!-- Hero -->
     <section class="hero" aria-label="Introduction">
+
+      <div class="hero__top">
+        <div class="hero__head">
       <p class="hero__meta">
         <span id="emoji" aria-hidden="true">👋</span>
         <span id="greeting">Hello</span>
@@ -33,13 +43,7 @@ const diagrams = { brokenomore: BrokeNoMore, cardiology: Cardiology, minigpt: Mi
         <time id="clock" aria-hidden="true">--/--/---- --:--:--</time>
         <span class="muted">IST · Ahmedabad, India</span>
       </p>
-
-      <div class="hero__top">
-        <div class="hero__head">
           <h1 class="pixel-text" id="name" aria-label={profile.name}>{profile.name}</h1>
-          <p class="hero__role">
-            {profile.role}<span class="muted"> · </span><span class="typewriter" id="typewriter">{typewriterLines[0]}</span>
-          </p>
         </div>
 
         <figure class="portrait">
@@ -48,8 +52,11 @@ const diagrams = { brokenomore: BrokeNoMore, cardiology: Cardiology, minigpt: Mi
       </div>
 
       <div class="bio" id="about">
+        <p class="hero__role">
+            {profile.role}<span class="muted"> · </span><span class="typewriter" id="typewriter">{typewriterLines[0]}</span>
+          </p>
         <p>
-          <span class="greet">Hello</span>, I'm Jinang, a software engineer who likes turning messy,
+          I'm Jinang, a software engineer who likes turning messy,
           real-world problems into systems that stay reliable. I work across the stack, from APIs and data
           pipelines to the interfaces people actually touch, and I care about the unglamorous parts: tests,
           observability and clean failure modes.
@@ -226,4 +233,8 @@ const diagrams = { brokenomore: BrokeNoMore, cardiology: Cardiology, minigpt: Mi
       <p><a class="ulink small" href="#" id="toTop">Back to top ↑</a></p>
     </footer>
   </main>
+
+  <aside class="side side--right" aria-label="Mood board (experiment)"><Moodboard /></aside>
+  </div>
+  <script is:inline src={`${home}lab.js`}></script>
 </Base>

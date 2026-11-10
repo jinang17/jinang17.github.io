@@ -1,0 +1,44 @@
+---
+// Cover art: three soft waves in tones of the page background (lighter, darker, lighter),
+// sitting in the lower half; the upper half is left empty. All layers are true sine waves with the
+// same period (300 units), so they drift sideways and loop seamlessly.
+interface Layer { y: number; amp: number; phase: number; tone: string; dur: number; dir: 1 | -1 }
+
+// Crests never rise above y = 160, so the top 50% of the cover stays clear.
+const layers: Layer[] = [
+  { y: 176, amp: 10, phase: 0.00, tone: 'var(--w-lt1)', dur: 52, dir: 1 },
+  { y: 206, amp: 11, phase: 0.35, tone: 'var(--w-dk1)', dur: 44, dir: -1 },
+  { y: 238, amp: 10, phase: 0.70, tone: 'var(--w-lt2)', dur: 60, dir: 1 },
+];
+
+// y(x) = y0 - amp * sin(2*pi*(x/300 + phase)), built as one cubic Bezier per half-wave.
+// With handles at 0.3642 of the span (the standard best-fit for a sine half-wave) the curve is
+// smooth (C1) at every join and within ~0.1% of a true sine.
+const HANDLE = 0.3642;
+function wave({ y, amp, phase }: Layer) {
+  const period = 300;
+  const half = period / 2;
+  const start = -period - phase * period;   // a crest sits at x = start
+  const end = 2 * period;
+  let x = start;
+  let crest = true;
+  let d = `M${x.toFixed(2)} ${(y - amp).toFixed(2)}`;
+  while (x < end) {
+    const nx = x + half;
+    const y0 = crest ? y - amp : y + amp;
+    const y1 = crest ? y + amp : y - amp;
+    d += ` C${(x + half * HANDLE).toFixed(2)} ${y0.toFixed(2)} ${(nx - half * HANDLE).toFixed(2)} ${y1.toFixed(2)} ${nx.toFixed(2)} ${y1.toFixed(2)}`;
+    x = nx;
+    crest = !crest;
+  }
+  return `${d} L${end} 320 L${start} 320 Z`;
+}
+---
+<svg class="cover" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Soft layered waves in shades of the page background, slowly drifting">
+  <rect width="300" height="300" style="fill: var(--w-base)"/>
+  {layers.map((l) => (
+    <g class="wave" style={`animation-duration:${l.dur}s;animation-direction:${l.dir === 1 ? 'normal' : 'reverse'}`}>
+      <path d={wave(l)} style={`fill:${l.tone}`}/>
+    </g>
+  ))}
+</svg>

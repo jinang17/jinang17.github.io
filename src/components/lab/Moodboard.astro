@@ -1,0 +1,22 @@
+---
+import Poster from './Poster.astro';
+import { watching } from '../../data/lab';
+const hasProgress = watching.episode !== undefined && watching.total !== undefined;
+const pct = hasProgress ? Math.round((watching.episode! / watching.total!) * 100) : 0;
+const meta = [watching.kind, `Season ${watching.season}`, hasProgress ? `E${watching.episode} of ${watching.total}` : null].filter(Boolean).join(' · ');
+---
+<article class="watch" aria-label="Currently watching">
+  <p class="watch__label"><span class="watch__dot" aria-hidden="true"></span> Currently watching</p>
+  <div class="watch__row">
+  <div class="watch__poster"><Poster title={watching.title} image={watching.image} /></div>
+  <div class="watch__text">
+    <strong class="watch__title">{watching.title}</strong>
+    <span class="watch__meta">{meta}</span>
+    {hasProgress && (
+      <div class="watch__bar" role="progressbar" aria-valuemin="0" aria-valuemax={watching.total} aria-valuenow={watching.episode} aria-label="Episodes watched">
+        <div class="watch__fill" style={`width:${pct}%`}></div>
+      </div>
+    )}
+  </div>
+  </div>
+</article>

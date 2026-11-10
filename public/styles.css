@@ -545,3 +545,20 @@ details.more { margin-top: var(--space-tight); }
 
 /* a little more air between the note and the email */
 .say-hi { bottom: calc(100% + 0.2rem); }
+
+/* Portrait tile now starts at the top of the greeting line (it is part of the same block) */
+.hero__meta { margin: 0; line-height: 1; }
+.hero__head { gap: 1rem; }
+
+/* top edge of the portrait tile = top of the capital letters in the greeting line */
+@media (min-width: 641px) { .hero__top > .portrait { margin-top: 2.5px; } }
+
+/* name -> role gap matches role -> bio gap */
+.hero__head .hero__role { margin-top: 1rem; }
+
+.hero__head .hero__role { margin-top: 1.5rem; }
+
+/* Typewriter line now leads the bio; the portrait tile ends with the pixel name */
+.hero .bio .hero__role { margin: 0 0 0.5rem; min-height: 0; font-size: 1.0625rem; text-align: left; }
+.hero .bio .hero__role + p { margin-top: 0; }
+.hero__head { justify-content: flex-start; }

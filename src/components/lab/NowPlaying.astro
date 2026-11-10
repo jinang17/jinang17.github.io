@@ -1,0 +1,46 @@
+---
+import Cover from './Cover.astro';
+import { tracks } from '../../data/lab';
+const t = tracks[0];
+const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+---
+<section class="np" id="np" aria-label="Music player" data-tracks={JSON.stringify(tracks)}>
+  <p class="np__label">
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    Now playing
+  </p>
+
+  <div class="np__cover" id="npCover" style={`--sky1:${t.sky[0]};--sky2:${t.sky[1]}`}>
+    <Cover />
+  </div>
+
+  <h2 class="np__title" id="npTitle">{t.title}</h2>
+  <p class="np__artist" id="npArtist">{t.artist}</p>
+
+  <div class="np__bar">
+    <span class="np__time" id="npCur">0:00</span>
+    <div class="np__seek" id="npSeek" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="np__fill" id="npFill"></div>
+    </div>
+    <span class="np__time" id="npDur">{fmt(t.duration)}</span>
+  </div>
+
+  <div class="np__ctrl">
+    <button class="np__btn" id="npPrev" type="button" aria-label="Previous track">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 5l-9 7 9 7V5Z"/></svg>
+    </button>
+    <button class="np__btn np__btn--main" id="npPlay" type="button" aria-label="Play">
+      <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7V5Z"/></svg>
+      <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+    </button>
+    <button class="np__btn" id="npNext" type="button" aria-label="Next track">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 5l9 7-9 7V5Z"/></svg>
+    </button>
+  </div>
+
+  <label class="np__vol">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10H4ZM16.5 9a4 4 0 0 1 0 6"/></svg>
+    <input id="npVol" type="range" min="0" max="100" value="55" aria-label="Volume">
+    <span class="np__time" id="npVolVal">55</span>
+  </label>
+</section>
