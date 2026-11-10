@@ -454,3 +454,21 @@ details.more { margin-top: var(--space-tight); }
 .bio p { text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; text-wrap: wrap; }
 .hero__row { margin-top: 2.5rem; }
 @media (max-width: 640px) { .hero__row { margin-top: 2rem; } }
+
+/* Experience: chips and "Show more" start at the same x as the bullet text (after the dash) */
+.exp .role__body .chips,
+.exp .role__body details.more > summary { margin-left: 1.1rem; }
+
+/* Ratings: smaller figures */
+.ratings { gap: 1.75rem; }
+.rating { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
+
+/* Hero: portrait tile matches the height of the text block beside it */
+.hero__row { align-items: stretch; }
+.portrait { height: 100%; width: 9.5rem; }
+.portrait img { height: 100%; object-fit: contain; }
+@media (max-width: 640px) {
+  .hero__row { align-items: start; }
+  .portrait { height: auto; }
+  .portrait img { height: auto; }
+}
