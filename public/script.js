@@ -129,7 +129,7 @@
     var next = currentTheme() === 'dark' ? 'light' : 'dark';
     var r = themeBtn.getBoundingClientRect();
     var x = r.left + r.width / 2, y = r.top + r.height / 2;
-    if (!document.startViewTransition || reduced) { applyTheme(next); return; }
+    if (!document.startViewTransition) { applyTheme(next); return; }
     var vt = document.startViewTransition(function () { applyTheme(next); });
     vt.ready.then(function () {
       var radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
@@ -235,7 +235,7 @@
   /* ---------------- Typewriter ---------------- */
   var tw = $('#typewriter');
   var lines = window.__lines || [];
-  if (tw && lines.length > 1 && !reduced) {
+  if (tw && lines.length > 1) {
     var li = 0, ci = lines[0].length, deleting = true;
     var step = function () {
       var line = lines[li];
