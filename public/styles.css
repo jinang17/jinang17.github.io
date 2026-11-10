@@ -513,3 +513,32 @@ details.more { margin-top: var(--space-tight); }
 }
 
 .say-hi { margin-right: 0.3rem; }
+
+/* ------------------------------------------------------------------
+   Smaller hero + hand-placed "say hi" with an arrow to the email
+------------------------------------------------------------------ */
+.hero__head .pixel-text { font-size: 12.5cqw; }
+.hero__top { grid-template-columns: minmax(0, 1fr) 9rem; }
+.portrait { width: 9rem; }
+@media (max-width: 640px) {
+  .hero__top { grid-template-columns: minmax(0, 1fr) 5.5rem; }
+  .portrait { width: 5.5rem; }
+}
+
+.cta__mail { position: relative; }
+.say-hi {
+  position: absolute; left: -1.6rem; bottom: calc(100% - 0.35rem);
+  display: flex; align-items: flex-end; gap: 0.15rem; margin: 0;
+  font: 500 1.4rem/1 var(--font-hand); color: var(--muted);
+  transform: rotate(-7deg); transform-origin: right bottom; white-space: nowrap; pointer-events: none;
+}
+.say-hi svg { width: 1.9rem; height: 1.5rem; margin-bottom: -0.6rem; margin-left: 0.05rem; }
+@media (max-width: 640px) { .socials { row-gap: 2.5rem; } }
+
+/* say hi: sits up and to the left of the email like a scribbled note, arrow aimed at the address */
+.say-hi {
+  left: 0.9rem; bottom: calc(100% - 0.2rem);
+  font: 500 1.7rem/1 var(--font-hand);
+  transform: rotate(-6deg); transform-origin: left bottom;
+}
+.say-hi svg { width: 2.2rem; height: 1.75rem; margin-bottom: -0.85rem; margin-left: 0.1rem; }
