@@ -449,3 +449,8 @@ details.more { margin-top: var(--space-tight); }
 }
 
 @media (max-width: 640px) { .socials { row-gap: 2.5rem; } }
+
+/* Bio: even right edge; more air between the pixel name and the portrait */
+.bio p { text-align: justify; text-justify: inter-word; hyphens: auto; -webkit-hyphens: auto; text-wrap: wrap; }
+.hero__row { margin-top: 2.5rem; }
+@media (max-width: 640px) { .hero__row { margin-top: 2rem; } }
